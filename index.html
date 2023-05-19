@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<!--            ______                         _______
+     ___       /_____/|  /\          /| |    /_______/ \
+    /__/|      |  ___|/ |\ \        / | |   / ______ \  \
+    |  ||      |  |/___ |  \\      /  | |  / /|      \ \/|
+    |  ||      |  |___/||   \\    /   | | | | |      | | |
+    |  ||      |  ___|/ | |\ \\  / /| | | | | |      | | |
+    |  ||      |  ||    | | | || | || | | | | |      | | |
+    |  ||___   |  ||    | | | || | || | | | | |      | |/
+    |  |/__/|| |  |/_/| | | |  \/  || | |  \ \/_____/ /
+    |_____|/   |_____|/ |_|/ \____/ | |_|   \________/
+     _       _         /_____/\
+    / \     /_/       | ____ \ \
+    |\ \   | ||       | ||  \ \ \
+    | \ \  | ||       | ||   \ \/|
+    |  \ \ | ||       | ||   | | |
+    |   \ \| ||       | ||   | |/
+    | |\ \ | ||       | ||__/ /
+    | | \ \| ||       | |/_/ /
+    |_|/  \__|/       |_____/
+            This webpage makes use of the API on (mostly) every browser called the localStorage API. Again, this is on every browser, so you can use it on any computer without having to download anything extra. localStorage uses the browser's cache to store information that remains usable even if you reload the cache or even completely shut down your computer. This is how "cookies" are created. To create one of these fantastic, savable variables, use 
+            
+            localStorage.~the name of your variable~ = ~whatever you want to store~;
+            
+            No "var" necessary! to access it, simply use it like a variable and type
+            
+                    localStorage.~the name of your variable~;
+
+            For example:
+            
+                    localStorage.lemonDelightScore = 10;
+                        ~Reload the page.~
+                    alert(localStorage.lemonDelightScore);
+                        ~The number 10 appears in an alert.~
+                        
+            Another awesome part of haviong localStorage is, because it's saved on your browser, not your webpage, you can send that message across webpages, which is helpful if you are making a multi-page game or a page that requires you to have an account.
+-->
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Lemon Delight.Clicker</title>
+    </head>
+    <style>
+        .welcome {
+            font-family: cursive, serif;
+            text-align: center;
+        }
+        .lemon {
+            font-size: 100px;
+        }
+        .score {
+            color: rgba(156, 39, 0);
+        }
+        .cookiesNote {
+            font-size: 10px;
+            position: fixed;
+            bottom: 0px;
+            left: 0px;
+            background-color: rgba(0, 0, 0, 0.5);
+            color: white;
+        }
+        .cookieBlocker {
+            height: 20px;
+        }
+        .closeCookies {
+            color: rgba(255, 0, 0, 100);
+        }
+    </style>
+    <body>
+        <h1 class = "welcome">
+            Welcome to the Lemon Delight clicker tycoon!
+        </h1>
+        <br>
+        <div class = "lemon">🍋</div>
+        Score: <span class = "score" id = "score">0</span>
+        <br>
+        <input class = "reset" type = "button" value = "Reset">
+        <div class = "cookiesNote"> Thanks for using Lemon Delight's clicker. This webpage collects cookies, which are bits of info that we store on your browser (Firefox, Chrome, Edge, etc.). The only thing this contains is your score, so we're not stealing important information, just your game progress. If you would like to block these cookies, press here--> <input type = "button" class = "cookieBlocker" value = "Super Duper Kookee BlokR 3000">, but note that if you do, your score will not be saved if you reload or close your page.<input class = "closeCookies" type = "button" value = "X"></div>
+    </body>
+    <script>
+        var closeCookiesEl = document.getElementsByClassName("closeCookies")[0];
+        var cookieBlockerEl = document.getElementsByClassName("cookieBlocker")[0];
+        var cookiesNoteEl = document.getElementsByClassName("cookiesNote")[0];
+        var lemonEl = document.getElementsByClassName("lemon")[0];
+        var scoreEl = document.getElementsByClassName("score")[0];
+        var resetEl = document.getElementsByClassName("reset")[0];
+        var cookiesAllowed = true;
+        if(localStorage.lemonDelightScore > 0 && cookiesAllowed){
+            scoreEl.innerHTML = localStorage.lemonDelightScore;
+        }
+        var addScore = function() {
+            scoreEl.innerHTML = parseFloat(scoreEl.innerHTML) + 1;
+            if(cookiesAllowed) {
+                localStorage.lemonDelightScore = scoreEl.innerHTML;
+            }
+        }
+        var resetScore = function() {
+            if(cookiesAllowed) {
+                localStorage.lemonDelightScore = 0;
+            }
+            scoreEl.innerHTML = 0;
+        }
+        var blockCookies = function() {
+            cookiesAllowed = false;
+            alert("Believe it or not, our cookies have been blocked, but unfortunately, the only way for us to save your prefrences is to actually make another cookie, so each time you visit this page, you'll have to use the Super Duper Kookee BlocR 3000 again. Actually, if you are on Chrome, you can go to chrome://settings/content/all and block everything on this webpage, this webpage will not collect cookies.");
+            cookiesNoteEl.style.display = "none";
+        }
+        var closeCookies = function() {
+            cookiesNoteEl.style.display = "none";
+        }
+        closeCookiesEl.addEventListener("click", closeCookies);
+        lemonEl.addEventListener("click", addScore);
+        resetEl.addEventListener("click", resetScore);
+        cookieBlockerEl.addEventListener("click", blockCookies);
+        if (scoreEl.innerHTML < 0) {
+            alert("I think something is broken. Your score is less than zero. Copy this link or hold Ctrl (or Command on Apple devices) and press R to reload this page. https://www.khanacademy.org/computer-programming/lemon-delightclicker/4756418415869952");
+        }/*Sends a message to the user if somehow the score goes below 0, which isn't supposed to happen.*/
+    </script>
+</html>
